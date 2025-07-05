@@ -23,7 +23,7 @@ export default function InputBar({ messages, setMessages, mode }) {
       try {
         const response = await fetch(
         //   "https://aestrick-b.onrender.com/ask?question=" + encodeURIComponent(text)
-          "http://192.168.0.147:800/ask?question=" + encodeURIComponent(text) + "&mode=" + encodeURIComponent(mode), // Pass the mode to the backend
+          "http://192.168.0.147:8000/ask?question=" + encodeURIComponent(text) + "&mode=" + encodeURIComponent(mode), // Pass the mode to the backend
 
         );
         const data = await response.json();

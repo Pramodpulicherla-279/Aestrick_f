@@ -9,19 +9,44 @@ export default function VideoSection({ video }) {
   const webViewRef = useRef(null);
   const [expanded, setExpanded] = useState(false);
   const [isLandscape, setIsLandscape] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
 
   if (!video) return null;
 
+  const getCurrentTime = () => {
+    webViewRef.current?.injectJavaScript(`
+      window.ReactNativeWebView.postMessage(JSON.stringify({type: "getCurrentTime"}));
+      true;
+    `);
+  };
+
+  const seekTo = (time) => {
+    webViewRef.current?.injectJavaScript(`
+      window.ReactNativeWebView.postMessage(JSON.stringify({
+        type: "seekTo",
+        time: ${time}
+      }));
+      true;
+    `);
+  };
+
   const handleMessage = async (event) => {
-    const message = event.nativeEvent.data;
-    if (message === 'enterFullscreen') {
-      await toggleLandscape();
-    } else if (message === 'exitFullscreen') {
-      await togglePortrait();
+    try {
+      const data = JSON.parse(event.nativeEvent.data);
+      if (data.type === 'currentTime') {
+        setCurrentTime(data.time);
+      } else if (data.type === 'enterFullscreen') {
+        await toggleLandscape();
+      } else if (data.type === 'exitFullscreen') {
+        await togglePortrait();
+      }
+    } catch (e) {
+      console.error(e);
     }
   };
 
   const toggleLandscape = async () => {
+    getCurrentTime();
     await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE);
     setIsLandscape(true);
   };
@@ -29,6 +54,7 @@ export default function VideoSection({ video }) {
   const togglePortrait = async () => {
     await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT);
     setIsLandscape(false);
+    seekTo(currentTime);
   };
 
   return (
@@ -59,6 +85,19 @@ export default function VideoSection({ video }) {
             style={{ flex: 1 }}
             allowsFullscreenVideo={true}
             onMessage={handleMessage}
+            injectedJavaScript={`
+              window.addEventListener('message', function(e) {
+                if (e.data === 'getCurrentTime') {
+                  if (player && player.getCurrentTime) {
+                    window.ReactNativeWebView.postMessage(JSON.stringify({
+                      type: 'currentTime',
+                      time: player.getCurrentTime()
+                    }));
+                  }
+                }
+              });
+              true;
+            `}
           />
           <TouchableOpacity
             style={{

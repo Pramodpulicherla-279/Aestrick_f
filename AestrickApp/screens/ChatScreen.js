@@ -8,6 +8,7 @@ import {
   Text,
   TouchableOpacity,
   StatusBar,
+  Alert,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import ChatMessage from '../components/ChatMessage';
@@ -20,8 +21,8 @@ export default function ChatScreen() {
   const [open, setOpen] = useState(false);
   const flatListRef = useRef(null);
   const [items, setItems] = useState([
-    { label: 'General', value: 'general' },
-    { label: 'Textbook', value: 'textbook' },
+    { label: '🌐 General', value: 'general' },
+    { label: '📖 Textbook', value: 'textbook' },
   ]);
   const handleSend = text => {
     if (text.trim()) {
@@ -46,13 +47,11 @@ export default function ChatScreen() {
   }, [messages]);
 
   const handleMenuPress = () => {
-    console.log('Menu pressed');
-    // Add your navigation drawer toggle here
+    Alert.alert('Alert', 'Menu button pressed');
   };
 
   const handleAddPress = () => {
-    console.log('Add pressed');
-    // Add your action here
+    Alert.alert('Alert', 'Add button pressed');
   };
 
   const getIntroSubtitle = () => {
@@ -66,7 +65,10 @@ export default function ChatScreen() {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={styles.container}
+      style={[
+        styles.container,
+        { backgroundColor: mode === 'general' ? '#343a40' : '#1a1f2e' },
+      ]}
       keyboardVerticalOffset={Platform.OS === 'ios' ? 60 : 0}
     >
       <StatusBar barStyle="dark-content" />
@@ -84,13 +86,50 @@ export default function ChatScreen() {
             setValue={setMode}
             setItems={setItems}
             style={{
-              backgroundColor: '#caf0f8',
-              borderColor: '#caf0f8',
-              borderRadius: 14,
+              backgroundColor: mode == 'general' ? '#caf0f8' : '#f0f8ff',
+              borderColor: 'transparent',
+              borderWidth: 0,
+              borderRadius: 20, // Border radius for main button
             }}
-            textStyle={{ color: '#343a40', fontWeight: 'bold' }}
-            dropDownContainerStyle={{ backgroundColor: '#caf0f8' }}
-            containerStyle={{ width: 140, height: 40 }}
+            textStyle={{
+              color: '#343a40',
+              fontWeight: 'bold',
+              fontSize: 14,
+            }}
+            dropDownContainerStyle={{
+              backgroundColor: mode == 'general' ? '#caf0f8' : '#f0f8ff',
+              borderColor: 'transparent',
+              borderRadius: 20, // Border radius for dropdown container
+              marginTop: 5,
+            }}
+            itemSeparatorStyle={{
+              backgroundColor: '#adb5bd',
+              height: 1,
+              marginHorizontal: 5,
+            }}
+            itemStyle={{
+              justifyContent: 'flex-start',
+              borderRadius: 20, // Border radius for individual items
+              marginHorizontal: 5,
+              marginVertical: 2,
+            }}
+            selectedItemContainerStyle={{
+              backgroundColor: mode == 'general' ? '#b8e0f7' : '#e0f0ff',
+              borderRadius: 5, // Border radius for selected item
+            }}
+            selectedItemLabelStyle={{
+              fontWeight: 'bold',
+            }}
+            containerStyle={{
+              width: 140,
+              height: 40,
+            }}
+            listItemContainerStyle={{
+              height: 50,
+            }}
+            listItemLabelStyle={{
+              color: '#343a40',
+            }}
           />
         </View>
         <TouchableOpacity style={styles.headerButton} onPress={handleAddPress}>
@@ -120,7 +159,7 @@ export default function ChatScreen() {
             inverted={false}
           />
         </View>
-        <InputBar messages={messages} setMessages={setMessages} />
+        <InputBar messages={messages} setMessages={setMessages} mode={mode} />
       </View>
     </KeyboardAvoidingView>
   );
@@ -129,7 +168,7 @@ export default function ChatScreen() {
 const styles = StyleSheet.create({
   introContainer: {
     alignItems: 'center',
-    justifyContent: 'center', // (optional, for vertical centering if needed)
+    justifyContent: 'center',
     marginTop: 40,
     marginBottom: 20,
     width: '100%',
@@ -148,7 +187,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   msgcontainer: {
-    // flex: 1,
     backgroundColor: '#343a40',
   },
   container: {
@@ -182,5 +220,7 @@ const styles = StyleSheet.create({
   chatContainer: {
     flex: 1,
   },
+  headerPickerContainer: {
+    zIndex: 1, // Ensure dropdown appears above other elements
+  },
 });
-

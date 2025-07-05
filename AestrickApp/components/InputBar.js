@@ -3,12 +3,13 @@ import {
   TextInput,
   TouchableOpacity,
   ActivityIndicator,
+  Alert,
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { useState } from "react";
 
 
-export default function InputBar({ messages, setMessages }) {
+export default function InputBar({ messages, setMessages, mode }) {
   const [text, setText] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -22,13 +23,14 @@ export default function InputBar({ messages, setMessages }) {
       try {
         const response = await fetch(
         //   "https://aestrick-b.onrender.com/ask?question=" + encodeURIComponent(text)
-          "http://192.168.0.147:8000/ask?question=" + encodeURIComponent(text)
+          "http://192.168.0.147:800/ask?question=" + encodeURIComponent(text) + "&mode=" + encodeURIComponent(mode), // Pass the mode to the backend
 
         );
         const data = await response.json();
         // Add AI answer to chat
         setMessages((prev) => [...prev, { text: data.answer, type: "answer", youtube: data.youtube }]);
       } catch (error) {
+        Alert.alert(error.message);
         setMessages((prev) => [
           ...prev,
           { text: "Error fetching response from AI Error fetching response from AIError fetching response from AIError fetching response from AIError fetching response from AIError fetching response from AIError fetching response from AIError fetching response from AIError fetching response from AIError fetching response from AIError fetching response from AIError fetching response from AI.", type: "answer" },

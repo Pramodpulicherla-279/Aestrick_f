@@ -14,7 +14,7 @@ import Orientation from 'react-native-orientation-locker';
 export default function ChatMessage({ text, type, youtube }) {
   const isQuestion = type === 'question';
   const { width } = useWindowDimensions();
-  const bubbleWidth = width * 0.8;
+  // const bubbleWidth = width * 0.8;
   const maxBubbleWidth = width * 0.8;
   const minBubbleWidth = 40;
   const webViewRef = useRef(null);
@@ -143,24 +143,43 @@ export default function ChatMessage({ text, type, youtube }) {
     Math.max(minBubbleWidth, text.length * 8 + 40), // 8px per character + padding
   );
 
+  // Question bubble (unchanged)
+  if (isQuestion) {
+    return (
+      <View
+        style={{
+          alignSelf: 'flex-end',
+          backgroundColor: '#434b52',
+          borderRadius: 16,
+          marginVertical: 5,
+          padding: 14,
+          maxWidth: maxBubbleWidth,
+          width: estimatedWidth,
+          // elevation: 3,
+          // shadowColor: '#D0F1FF',
+          // shadowOffset: { width: 8, height: 2 },
+          // shadowOpacity: 0.3,
+          // shadowRadius: 6,
+        }}
+      >
+        <Text style={{color: '#fff'}}>{text}</Text>
+      </View>
+    );
+  }
   return (
     <View
       style={{
-        alignSelf: isQuestion ? 'flex-end' : 'flex-start',
-        backgroundColor: isQuestion ? '#D0F1FF' : '#FFF3E0',
-        borderRadius: 20,
+        alignSelf: 'flex-start',
+        backgroundColor: 'none',
+        borderRadius: 16,
         marginVertical: 5,
-        padding: 14,
-        maxWidth: maxBubbleWidth,
-        width: isQuestion ? estimatedWidth : maxBubbleWidth,
-        elevation: 12, // or any fixed value you want
-        shadowColor: isQuestion ? '#D0F1FF' : '#FFF3E0', // <-- only shadowColor is dynamic
-        shadowOffset: { width: 8, height: 2 },
-        shadowOpacity: 0.3,
-        shadowRadius: 6,
+        padding: 16,
+        maxWidth: '100%',
+        width: '100%',
+        position: 'relative',
       }}
     >
-      <Text>{text}</Text>
+      <Text style={{ color: '#fff', fontSize: 16, lineHeight: 24 }}>{text}</Text>
       {videoId && type === 'answer' && (
         <View style={{ marginTop: 10, width: '100%' }}>
           {/* Row: Dropdown + Landscape Icon */}

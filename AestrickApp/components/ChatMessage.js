@@ -27,6 +27,7 @@ export default function ChatMessage({ text, type, youtube }) {
   const [currentTime, setCurrentTime] = useState(0);
   const [showCopyOption, setShowCopyOption] = useState(false);
   const [copyOptionPosition, setCopyOptionPosition] = useState({ x: 0, y: 0 });
+  const safeText = typeof text === 'string' ? text : (text == null ? '' : String(text));
 
   // Helper to extract YouTube video ID from iframe string
   const getYoutubeId = iframe => {
@@ -178,7 +179,7 @@ export default function ChatMessage({ text, type, youtube }) {
   const videoId = getYoutubeId(youtube);
   const estimatedWidth = Math.min(
     maxBubbleWidth,
-    Math.max(minBubbleWidth, text.length * 8 + 40),
+    Math.max(minBubbleWidth, safeText.length * 8 + 40),
   );
 
   if (isQuestion) {
@@ -196,7 +197,7 @@ export default function ChatMessage({ text, type, youtube }) {
             width: estimatedWidth,
           }}
         >
-          <Text style={{ color: '#fff' }}>{text}</Text>
+          <Text style={{ color: '#fff' }}>{safeText}</Text>
         </Pressable>
 
         {/* Copy option modal */}
@@ -250,8 +251,8 @@ export default function ChatMessage({ text, type, youtube }) {
           position: 'relative',
         }}
       >
-        <Text style={{ color: '#fff', fontSize: 16, lineHeight: 24 }}>
-          {text}
+        <Text style={{ color: '#333', fontSize: 16, lineHeight: 24 }}>
+          {safeText}
         </Text>
         {videoId && type === 'answer' && (
           <View style={{ marginTop: 10, width: '100%' }}>
@@ -266,7 +267,7 @@ export default function ChatMessage({ text, type, youtube }) {
                 style={{
                   flexDirection: 'row',
                   alignItems: 'center',
-                  backgroundColor: '#e0e0e0',
+                  backgroundColor: '#ddd',
                   borderRadius: 8,
                   padding: 8,
                   flex: 1,
@@ -279,9 +280,10 @@ export default function ChatMessage({ text, type, youtube }) {
                   name={expanded ? 'keyboard-arrow-up' : 'keyboard-arrow-down'}
                   size={22}
                 />
-                <Text style={{ marginLeft: 8, fontWeight: 'bold' }}>
+                {expanded && <Text style={{ marginLeft: 8, fontWeight: 'bold' }}>Show Video</Text>}
+                {/* <Text style={{ marginLeft: 8, fontWeight: 'bold' }}>
                   {expanded ? 'Hide Video' : 'Show Video'}
-                </Text>
+                </Text> */}
               </TouchableOpacity>
               <TouchableOpacity
                 style={{
@@ -394,25 +396,25 @@ export default function ChatMessage({ text, type, youtube }) {
 const styles = StyleSheet.create({
   fullscreenContainer: {
     flex: 1,
-    backgroundColor: '#000',
+    backgroundColor: '#fff',
     justifyContent: 'center',
   },
   fullscreenWebview: {
     flex: 1,
-    backgroundColor: '#000',
+    backgroundColor: '#fff',
   },
   closeButton: {
     position: 'absolute',
     top: 30,
     right: 30,
     zIndex: 10,
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    backgroundColor: 'rgba(255, 255, 255, 0.5)',
     borderRadius: 20,
     padding: 6,
   },
   modalOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.2)',
+    backgroundColor: 'rgba(247, 247, 247, 0.2)',
   },
   copyOptionContainer: {
     position: 'absolute',

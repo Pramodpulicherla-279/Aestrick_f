@@ -67,7 +67,7 @@ export default function ChatScreen() {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={[
         styles.container,
-        { backgroundColor: mode === 'general' ? '#343a40' : '#1a1f2e' },
+        { backgroundColor: mode === 'general' ? '#ffffff' : '#fefff3ff' },
       ]}
       keyboardVerticalOffset={Platform.OS === 'ios' ? 60 : 0}
     >
@@ -75,7 +75,7 @@ export default function ChatScreen() {
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity style={styles.headerButton} onPress={handleMenuPress}>
-          <Icon name="menu" size={24} color="#fff" />
+          <Icon name="menu" size={24} color="#333" />
         </TouchableOpacity>
         <View style={styles.headerPickerContainer}>
           <DropDownPicker
@@ -133,7 +133,7 @@ export default function ChatScreen() {
           />
         </View>
         <TouchableOpacity style={styles.headerButton} onPress={handleAddPress}>
-          <Icon name="add" size={24} color="#fff" />
+          <Icon name="add" size={24} color="#333" />
         </TouchableOpacity>
       </View>
       <View style={{ flex: 1 }}>
@@ -178,20 +178,20 @@ const styles = StyleSheet.create({
   introTitle: {
     fontSize: 22,
     fontWeight: 'bold',
-    color: '#fff',
+    color: '#333',
     marginBottom: 8,
   },
   introSubtitle: {
     fontSize: 16,
-    color: '#caf0f8',
+    color: '#1f8eb6ff',
     textAlign: 'center',
   },
   msgcontainer: {
-    backgroundColor: '#343a40',
+    backgroundColor: '#ffffffff',
   },
   container: {
     flex: 1,
-    backgroundColor: '#343a40',
+    backgroundColor: '#ffffff',
   },
   header: {
     flexDirection: 'row',

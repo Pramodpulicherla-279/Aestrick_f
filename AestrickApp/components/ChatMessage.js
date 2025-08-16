@@ -280,10 +280,10 @@ export default function ChatMessage({ text, type, youtube }) {
                   name={expanded ? 'keyboard-arrow-up' : 'keyboard-arrow-down'}
                   size={22}
                 />
-                {expanded && <Text style={{ marginLeft: 8, fontWeight: 'bold' }}>Show Video</Text>}
-                {/* <Text style={{ marginLeft: 8, fontWeight: 'bold' }}>
+                {/* {expanded && <Text style={{ marginLeft: 8, fontWeight: 'bold' }}>Show Video</Text>} */}
+                <Text style={{ marginLeft: 8, fontWeight: 'bold' }}>
                   {expanded ? 'Hide Video' : 'Show Video'}
-                </Text> */}
+                </Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={{

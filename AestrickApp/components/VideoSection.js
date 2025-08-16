@@ -66,13 +66,14 @@ export default function VideoSection({ video }) {
           backgroundColor: '#e0e0e0',
           borderRadius: 8,
           padding: 10,
+          color: '#333',
         }}
         onPress={() => setExpanded(!expanded)}
         accessibilityRole="button"
         accessibilityLabel={expanded ? "Hide Video" : "Show Video"}
       >
         <Icon name={expanded ? 'keyboard-arrow-up' : 'keyboard-arrow-down'} size={24} />
-        <Text style={{ marginLeft: 8, fontWeight: 'bold' }}>
+        <Text style={{ marginLeft: 8, fontWeight: 'bold', color: '#333' }}>
           {expanded ? 'Hide Video' : 'Show Video'}
         </Text>
       </TouchableOpacity>

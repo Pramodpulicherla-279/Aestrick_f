@@ -20,13 +20,14 @@ export default function InputBar({ messages, setMessages, mode }) {
       setMessages(prev => [...prev, { text: question, type: 'question' }]);
       setLoading(true);
       try {
-        const name = 'pramod';
+        const name = 'koli';
         const grade = '8';
+        const subject = 'chemistry';
         const url = `http://192.168.0.147:8000/ask?question=${encodeURIComponent(
           text,
         )}&mode=${encodeURIComponent(mode)}&name=${encodeURIComponent(
           name,
-        )}&grade=${grade}`;
+        )}&grade=${grade}&subject=${encodeURIComponent(subject)}`;
         const response = await fetch(url);
         const data = await response.json();
         // Add AI answer to chat
